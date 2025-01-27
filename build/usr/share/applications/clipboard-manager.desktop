@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=Clipboard Manager
+Exec=/usr/local/bin/clipboard-manager
+Icon=/usr/share/icons/clipboard.png
+Type=Application
+Categories=Utility;

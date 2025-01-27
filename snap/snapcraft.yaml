@@ -1,0 +1,25 @@
+name: clipboard-manager   # Unique name in the Snap Store
+base: core22              # Base snap
+version: '1.0.0'          # Your app version
+summary: A clipboard manager app  # Brief summary
+description: |
+  Clipboard Manager is a simple application to track and manage clipboard history.
+
+grade: stable             # Can be "stable" or "devel"
+confinement: strict       # Use strict confinement for production
+
+apps:
+  clipboard-manager:
+    command: clipboard-manager  # The name of your compiled binary
+    plugs:                      # Define necessary plugs
+      - home
+      - network
+      - wayland
+      - x11
+      - desktop
+      - desktop-legacy
+
+parts:
+  clipboard-manager:
+    plugin: go
+    source: .

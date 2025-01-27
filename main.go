@@ -15,6 +15,7 @@ import (
 	"golang.design/x/clipboard"
 )
 
+// https://snapcraft.io/docs/registering-your-app-name
 func main() {
 	// Initialize clipboard
 	if err := clipboard.Init(); err != nil {
@@ -33,7 +34,7 @@ func main() {
 
 	// Disable window resizing
 	myWindow.SetFixedSize(true)
-	myWindow.Resize(fyne.NewSize(400, 600))
+	myWindow.Resize(fyne.NewSize(500, 600))
 
 	// Clipboard history
 	clipboardHistory := []string{}
@@ -53,6 +54,8 @@ func main() {
 	createClipboardCard := func(text string) fyne.CanvasObject {
 		// Card layout
 		preview := widget.NewLabel(truncateText(text, 50))
+
+		// View button to show full content in a dialog
 		viewButton := widget.NewButton("View", func() {
 			dialog.ShowCustom(
 				"Clipboard Entry",
@@ -62,9 +65,14 @@ func main() {
 			)
 		})
 
-		// HBox to align preview and button
+		// Copy button to copy text to clipboard
+		copyButton := widget.NewButton("Copy", func() {
+			clipboard.Write(clipboard.FmtText, []byte(text))
+		})
+
+		// HBox to align preview and buttons
 		card := container.NewVBox(
-			container.NewHBox(preview, layout.NewSpacer(), viewButton), // Align button to the end
+			container.NewHBox(preview, layout.NewSpacer(), viewButton, copyButton), // Align buttons to the end
 			widget.NewSeparator(),
 		)
 		return card
@@ -118,7 +126,7 @@ func main() {
 
 // Helper function to load icon data
 func loadIconData() []byte {
-	iconData, err := os.ReadFile("clipboard.png")
+	iconData, err := os.ReadFile("/usr/share/icons/clipboard.png")
 	if err != nil {
 		log.Fatalf("Failed to load icon: %v", err)
 	}
