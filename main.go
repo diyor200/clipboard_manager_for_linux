@@ -100,11 +100,20 @@ func main() {
 			default:
 				// Read clipboard data
 				text := string(clipboard.Read(clipboard.FmtText))
+				exists := false
 				if text != "" && text != lastClipboard {
 					// Add to history if new
-					clipboardHistory = append([]string{text}, clipboardHistory...)
-					lastClipboard = text
-					refreshHistory()
+					for _, entry := range clipboardHistory {
+						if entry == text {
+							exists = true
+						}
+					}
+
+					if !exists {
+						clipboardHistory = append([]string{text}, clipboardHistory...)
+						lastClipboard = text
+						refreshHistory()
+					}
 				}
 			}
 			time.Sleep(500 * time.Millisecond) // Polling interval
